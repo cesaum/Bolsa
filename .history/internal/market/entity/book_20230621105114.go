@@ -26,7 +26,7 @@ func NewBook(orderChan chan *Order, orderChanOut chan *Order, wg *sync.WaitGroup
 func (b *Book) Trade() {
 	buyOrders := make(map[string]*OrderQueue)
 	sellOrders := make(map[string]*OrderQueue)
-
+	
 	//buyOrders := NewOrderQueue()
 	//sellOrders := NewOrderQueue()
 
@@ -44,6 +44,7 @@ func (b *Book) Trade() {
 			sellOrders[asset] = NewOrderQueue()
 			heap.Init(sellOrders[asset])
 		}
+
 
 		if order.OrderType == "BUY" {
 			buyOrders[asset].Push(order)
@@ -72,7 +73,7 @@ func (b *Book) Trade() {
 					b.OrdersChanOut <- buyOrder
 					b.OrdersChanOut <- order
 					if buyOrder.PendingShares > 0 {
-						buyOrders[asset].Push(buyOrder)
+						buyOrders.Push(buyOrder)
 					}
 				}
 			}
